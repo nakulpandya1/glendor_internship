@@ -1,0 +1,145 @@
+python pyradiomics.py
+
+( results for chris_t1_defaced.nii
+Extraction parameters:
+         {'minimumROIDimensions': 2, 'minimumROISize': None, 'normalize': False, 'normalizeScale': 1, 'removeOutliers': None, 'resampledPixelSpacing': None, 'interpolator': 'sitkBSpline', 'preCrop': False, 'padDistance': 5, 'distances': [1], 'force2D': False, 'force2Ddimension': 0, 'resegmentRange': None, 'label': 1, 'additionalInfo': True}
+Enabled filters:
+         {'Original': {}}
+Enabled features:
+         {'firstorder': [], 'glcm': [], 'gldm': [], 'glrlm': [], 'glszm': [], 'ngtdm': [], 'shape': []}
+/Users/nakulpandya/Desktop/3990/.venv/lib/python3.9/site-packages/radiomics/imageoperations.py:125: RuntimeWarning: overflow encountered in scalar add
+  highBound = maximum + 2 * binWidth
+GLCM is symmetrical, therefore Sum Average = 2 * Joint Average, only 1 needs to be calculated
+Result type: <class 'collections.OrderedDict'>
+
+Calculated features
+         diagnostics_Versions_PyRadiomics : v3.0.1
+         diagnostics_Versions_Numpy : 2.0.2
+         diagnostics_Versions_SimpleITK : 2.4.1
+         diagnostics_Versions_PyWavelet : 1.6.0
+         diagnostics_Versions_Python : 3.9.6
+         diagnostics_Configuration_Settings : {'minimumROIDimensions': 2, 'minimumROISize': None, 'normalize': False, 'normalizeScale': 1, 'removeOutliers': None, 'resampledPixelSpacing': None, 'interpolator': 'sitkBSpline', 'preCrop': False, 'padDistance': 5, 'distances': [1], 'force2D': False, 'force2Ddimension': 0, 'resegmentRange': None, 'label': 1, 'additionalInfo': True}
+         diagnostics_Configuration_EnabledImageTypes : {'Original': {}}
+         diagnostics_Image-original_Hash : 18c0243fd361864db00ae84060aa6fa50a30c6d3
+         diagnostics_Image-original_Dimensionality : 3D
+         diagnostics_Image-original_Spacing : (0.8799999952316284, 0.8799999952316284, 0.8799999952316284)
+         diagnostics_Image-original_Size : (188, 256, 190)
+         diagnostics_Image-original_Mean : 43.31733896014138
+         diagnostics_Image-original_Minimum : 0.0
+         diagnostics_Image-original_Maximum : 255.0
+         diagnostics_Mask-original_Hash : ab8b3fa6cdbad72ea4dc1d4491e274d7be13e60f
+         diagnostics_Mask-original_Spacing : (0.8799999952316284, 0.8799999952316284, 0.8799999952316284)
+         diagnostics_Mask-original_Size : (188, 256, 190)
+         diagnostics_Mask-original_BoundingBox : (0, 0, 0, 188, 243, 187)
+         diagnostics_Mask-original_VoxelNum : 4805765
+         diagnostics_Mask-original_VolumeNum : 1
+         diagnostics_Mask-original_CenterOfMassIndex : (np.float64(94.1379738709654), np.float64(111.2041591713286), np.float64(82.61040978907624))
+         diagnostics_Mask-original_CenterOfMass : (0.278586189017318, 20.260343206075618, -4.422842526112063)
+         original_shape_Elongation : 0.8526497370217965
+         original_shape_Flatness : 0.8091372962764198
+         original_shape_LeastAxisLength : 152.71095880712593
+         original_shape_MajorAxisLength : 188.73306113794112
+         original_shape_Maximum2DDiameterColumn : 191.76934374778585
+         original_shape_Maximum2DDiameterRow : 215.9230221508108
+         original_shape_Maximum2DDiameterSlice : 215.56946605767902
+         original_shape_Maximum3DDiameter : 216.89634641960686
+         original_shape_MeshVolume : 3274846.2398425713
+         original_shape_MinorAxisLength : 160.92319494658415
+         original_shape_Sphericity : 0.8306376107788969
+         original_shape_SurfaceArea : 128390.57442560782
+         original_shape_SurfaceVolumeRatio : 0.03920506949718037
+         original_shape_VoxelVolume : 3274994.2328423085
+         original_firstorder_10Percentile : 14.0
+         original_firstorder_90Percentile : 129.0
+         original_firstorder_Energy : 40743052001.0
+         original_firstorder_Entropy : 0.5950541235512739
+         original_firstorder_InterquartileRange : 66.0
+         original_firstorder_Kurtosis : 2.2160650861981717
+         original_firstorder_Maximum : 255.0
+         original_firstorder_MeanAbsoluteDeviation : 34.71863064423185
+         original_firstorder_Mean : 82.41409411404844
+         original_firstorder_Median : 93.0
+         original_firstorder_Minimum : 1.0
+         original_firstorder_Range : 254.0
+         original_firstorder_RobustMeanAbsoluteDeviation : 27.269407673204295
+         original_firstorder_RootMeanSquared : 92.07580278330632
+         original_firstorder_Skewness : -0.3742827094384492
+         original_firstorder_TotalEnergy : 27765248681.8788
+         original_firstorder_Uniformity : 0.7532312039571465
+         original_firstorder_Variance : 1685.8705495510853
+         original_glcm_Autocorrelation : 3.548450074521004
+         original_glcm_ClusterProminence : 0.8785346742066129
+         original_glcm_ClusterShade : -0.5076384855159108
+         original_glcm_ClusterTendency : 0.3905348705477631
+         original_glcm_Contrast : 0.08196383635781242
+         original_glcm_Correlation : 0.6526382593166992
+         original_glcm_DifferenceAverage : 0.08196383635781242
+         original_glcm_DifferenceEntropy : 0.40757082480811513
+         original_glcm_DifferenceVariance : 0.07509587146611045
+         original_glcm_Id : 0.9590180818210936
+         original_glcm_Idm : 0.9590180818210936
+         original_glcm_Idmn : 0.9836072327284374
+         original_glcm_Idn : 0.9726787212140626
+         original_glcm_Imc1 : -0.38044656670583027
+         original_glcm_Imc2 : 0.5930413238570165
+         original_glcm_InverseVariance : 0.08196383635781242
+         original_glcm_JointAverage : 1.8631439975666366
+         original_glcm_JointEnergy : 0.6886547750811018
+         original_glcm_JointEntropy : 0.9325409407770278
+         original_glcm_MCC : 0.6526382593166968
+         original_glcm_MaximumProbability : 0.8221620793877306
+         original_glcm_SumAverage : 3.7262879951332732
+         original_glcm_SumEntropy : 0.8505771044192156
+         original_glcm_SumSquares : 0.11812467672639387
+         original_gldm_DependenceEntropy : 2.7050571996186195
+         original_gldm_DependenceNonUniformity : 2157228.7156111463
+         original_gldm_DependenceNonUniformityNormalized : 0.44888352127312636
+         original_gldm_DependenceVariance : 21.892840313779274
+         original_gldm_GrayLevelNonUniformity : 3619852.156885116
+         original_gldm_GrayLevelVariance : 0.12338439802142674
+         original_gldm_HighGrayLevelEmphasis : 3.5674925844272454
+         original_gldm_LargeDependenceEmphasis : 626.9386952961703
+         original_gldm_LargeDependenceHighGrayLevelEmphasis : 2344.160058388207
+         original_gldm_LargeDependenceLowGrayLevelEmphasis : 197.63335452316124
+         original_gldm_LowGrayLevelEmphasis : 0.3581268538931887
+         original_gldm_SmallDependenceEmphasis : 0.003081258816042326
+         original_gldm_SmallDependenceHighGrayLevelEmphasis : 0.0073306495123319215
+         original_gldm_SmallDependenceLowGrayLevelEmphasis : 0.002018911141969927
+         original_glrlm_GrayLevelNonUniformity : 223115.65635837286
+         original_glrlm_GrayLevelNonUniformityNormalized : 0.5025207711895268
+         original_glrlm_GrayLevelVariance : 0.24873961440523665
+         original_glrlm_HighGrayLevelRunEmphasis : 2.396244387750906
+         original_glrlm_LongRunEmphasis : 504.5495343159709
+         original_glrlm_LongRunHighGrayLevelEmphasis : 1971.9227597011168
+         original_glrlm_LongRunLowGrayLevelEmphasis : 137.7062279696845
+         original_glrlm_LowGrayLevelRunEmphasis : 0.6509389030622734
+         original_glrlm_RunEntropy : 4.949799466007222
+         original_glrlm_RunLengthNonUniformity : 55935.16333285343
+         original_glrlm_RunLengthNonUniformityNormalized : 0.12284902494024563
+         original_glrlm_RunPercentage : 0.09239692808052893
+         original_glrlm_RunVariance : 376.73732368379575
+         original_glrlm_ShortRunEmphasis : 0.34343091049615787
+         original_glrlm_ShortRunHighGrayLevelEmphasis : 0.4660890888535348
+         original_glrlm_ShortRunLowGrayLevelEmphasis : 0.31276636590681356
+         original_glszm_GrayLevelNonUniformity : 4732.814133986928
+         original_glszm_GrayLevelNonUniformityNormalized : 0.966669553510402
+         original_glszm_GrayLevelVariance : 0.016665223244799007
+         original_glszm_HighGrayLevelZoneEmphasis : 1.0508578431372548
+         original_glszm_LargeAreaEmphasis : 3540823656.065155
+         original_glszm_LargeAreaHighGrayLevelEmphasis : 13904736937.422998
+         original_glszm_LargeAreaLowGrayLevelEmphasis : 949845335.7256944
+         original_glszm_LowGrayLevelZoneEmphasis : 0.9872855392156863
+         original_glszm_SizeZoneNonUniformity : 1380.390114379085
+         original_glszm_SizeZoneNonUniformityNormalized : 0.2819424253225255
+         original_glszm_SmallAreaEmphasis : 0.5486053964960711
+         original_glszm_SmallAreaHighGrayLevelEmphasis : 0.5763236030157546
+         original_glszm_SmallAreaLowGrayLevelEmphasis : 0.5416758448661503
+         original_glszm_ZoneEntropy : 3.041314244174801
+         original_glszm_ZonePercentage : 0.0010187764070860726
+         original_glszm_ZoneVariance : 3539860177.0899205
+         original_ngtdm_Busyness : 63212.2653693703
+         original_ngtdm_Coarseness : 5.046184842877134e-06
+         original_ngtdm_Complexity : 0.08247157920650311
+         original_ngtdm_Contrast : 0.010432378591438278
+         original_ngtdm_Strength : 4.922031319242378e-06
+  )
