@@ -1,71 +1,107 @@
+import os
 import nibabel as nib
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
+from nibabel.processing import resample_from_to
 
 def load_nifti(filepath):
-    # load and get data from nifti file
-    nii_img = nib.load(filepath)
-    return nii_img.get_fdata()
+    return nib.load(filepath)
 
-def get_slices(image, num_slices=16, axis=2):
-    # extract slices
-    total_slices = image.shape[axis]    
-    # select evenly spaced indices using linspace
+def get_slices(image_data, num_slices=16, axis=2):
+    total_slices = image_data.shape[axis]
     slice_indices = np.linspace(0, total_slices - 1, num_slices, dtype=int)
-
-    # extract slices depending on axis ( 0 = x sagittal slice, 1 = y coronal slice, 2 = z axial slice )
-    # we are using axis = 2 for axial slices
-    slices = [image[:, :, i] if axis == 2 
-              else image[i, :, :] if axis == 0 
-              else image[:, i, :]
+    slices = [image_data[:, :, i] if axis == 2 
+              else image_data[i, :, :] if axis == 0 
+              else image_data[:, i, :]
               for i in slice_indices]
-    
-    return slices, slice_indices  # return list of extracted slices & their indices
-
-# if the image shape is (256, 256, 160), and axis=2:
-	# •	image[:, :, 0] → First axial slice (top of the brain)
-	# •	image[:, :, 80] → Middle axial slice
-	# •	image[:, :, 159] → Last axial slice (bottom of the brain)
+    return slices, slice_indices
 
 def binarize(image, threshold=0.5):
-    # binarize image using threshold - it works by setting all values below the threshold to 0 and all values above to 1
     return (image > threshold).astype(np.uint8)
 
 def dice_coefficient(mask1, mask2):
-    # compute intersection and total voxel count for dice coefficient
     intersection = np.sum((mask1 > 0) & (mask2 > 0))
     total_voxels = np.sum(mask1 > 0) + np.sum(mask2 > 0)
-    return ((2. * intersection) / total_voxels)
+    return (2. * intersection / total_voxels) if total_voxels > 0 else 0.0
 
-# load normal and defaced NIfTI images
-normal_img = load_nifti("/Users/nakulpandya/Desktop/3990/chris_t1_all_fast_firstseg.nii.gz")
-defaced_img = load_nifti("/Users/nakulpandya/Desktop/3990/chris_t1_defaced_all_fast_firstseg.nii.gz")
+def compute_slicewise_dice(original_base, defaced_base, defacers, biomarkers, axis=2, output_excel=None):
 
-print(normal_img.shape)
-# extract the slices from each image
-normal_slices, slice_indices = get_slices(normal_img, num_slices=16)
-defaced_slices, slice_indices = get_slices(defaced_img, num_slices=16)
+    writer = pd.ExcelWriter(output_excel)
 
-# Compute Dice scores for each slice
-dice_scores = []
-for normal_slice, defaced_slice in zip(normal_slices, defaced_slices):
-    # binarize both images
-    normal_mask = binarize(normal_slice)
-    defaced_mask = binarize(defaced_slice)
+    for label in biomarkers:
+        print(f"\nProcessing biomarker: {label}")
+        original_folder = os.path.join(original_base, label)
+        subject_files = sorted([f for f in os.listdir(original_folder) if f.endswith("_firstseg.nii.gz")])
 
-    # Dice similarity
-    dice = dice_coefficient(normal_mask, defaced_mask)
-    dice_scores.append(dice)
+        # dictionary of dataframes for each defacer
+        defacer_slice_tables = {defacer: {} for defacer in defacers}
+        slice_count = None
 
-# print Dice scores for each slice
-for idx, score in zip(slice_indices, dice_scores):
-    print(f"Slice {idx}: Dice Coefficient = {score:.4f}")
+        for filename in subject_files:
+            subject = filename.replace(f"_{label}_all_fast_firstseg.nii.gz", "")
+            orig_path = os.path.join(original_folder, filename)
 
-# plot Dice scores across slices
-plt.figure(figsize=(10, 5))
-plt.plot(slice_indices, dice_scores, marker='o', linestyle='-', color='r')
-plt.xlabel("Slice Idx")
-plt.ylabel("Dice Coefficient")
-plt.title("Dice Similarity Across 16 Slices")
-plt.grid(True)
-plt.show()
+            orig_img = load_nifti(orig_path)
+            orig_data = orig_img.get_fdata()
+            if slice_count is None:
+                slice_count = orig_data.shape[axis]
+
+            # load defaced data
+            for defacer in defacers:
+                defaced_path = os.path.join(defaced_base.format(defacer=defacer), label, filename)
+                if not os.path.exists(defaced_path):
+                    print(f" [Missing] {defacer}: {filename}")
+                    continue
+                # resample defaced data to match original
+                defaced_img = load_nifti(defaced_path)
+                if orig_img.shape != defaced_img.shape or not np.allclose(orig_img.affine, defaced_img.affine):
+                    print(f"Resampling {os.path.basename(defaced_path)} to match {os.path.basename(orig_path)}")
+                    defaced_img = resample_from_to(defaced_img, orig_img, order=0)
+
+                defaced_data = defaced_img.get_fdata()
+                slice_dice_scores = []
+                # compute dice score for each slice
+                for i in range(slice_count):
+                    if axis == 0:
+                        orig_slice = orig_data[i, :, :]
+                        defaced_slice = defaced_data[i, :, :]
+                    elif axis == 1:
+                        orig_slice = orig_data[:, i, :]
+                        defaced_slice = defaced_data[:, i, :]
+                    else:
+                        orig_slice = orig_data[:, :, i]
+                        defaced_slice = defaced_data[:, :, i]
+
+                    dice = dice_coefficient(binarize(orig_slice), binarize(defaced_slice))
+                    slice_dice_scores.append(dice)
+
+                defacer_slice_tables[defacer][subject] = slice_dice_scores
+
+        # save dataframes to excel
+        for defacer, subject_dice in defacer_slice_tables.items():
+            if not subject_dice:
+                continue
+            df = pd.DataFrame.from_dict(subject_dice, orient="index")
+            df.columns = [f"Slice_{i}" for i in range(df.shape[1])]
+            df.index.name = "Subject"
+            sheet_name = f"{label}_{defacer}"
+            df.to_excel(writer, sheet_name=sheet_name)
+
+    writer.close()
+    print(f"\nFull-slice Dice scores saved to: {output_excel}")
+
+
+original_base = "/Users/nakulpandya/Desktop/3990/data/reoriented_input/segmentation/original"
+defaced_base = "/Users/nakulpandya/Desktop/3990/data/output_{defacer}/segmentation/original"
+
+defacers = ["afni_deface", "afni_reface" "fsl_deface", "mri_deface", "mydeface", "pydeface", "quickshear"]
+biomarkers = ["amygdala", "hippocampus", "thalamus"]
+
+compute_slicewise_dice(
+    original_base=original_base,
+    defaced_base=defaced_base,
+    defacers=defacers,
+    biomarkers=biomarkers,
+    axis=2,
+    output_excel="/Users/nakulpandya/Desktop/3990/data/all_slicewise_dice_scores.xlsx"
+)
